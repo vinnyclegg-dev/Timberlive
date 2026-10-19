@@ -1,4 +1,4 @@
-"""Offline tests: read-only client, the S2E1 end fixture, and lesson fixtures built from it."""
+"""Offline tests: read-only client, the late-game fixture, and lesson fixtures built from it."""
 
 import copy
 import inspect
@@ -12,7 +12,7 @@ from foreman.engine import analyse
 from foreman.store import Store
 from foreman.world import World
 
-FIXTURE = Path(__file__).with_name("fixtures") / "s2e1-end.json"
+FIXTURE = Path(__file__).with_name("fixtures") / "late-game.json"
 WRITE_PATHS = ("/api/demolish", "/api/building/act", "/api/building/pause", "/api/building/priority",
                "/api/building/workers", "/api/speed", "/api/plant", "/api/unplant", "/api/unlock", "/api/cutting-area",
                "/api/map/demolish-resources", "/api/camera/layers", "/api/work-hours", "/api/save", "/api/load",
@@ -54,9 +54,9 @@ def test_place_only_as_check():
         bridge._post_read("/api/place", {"template": "Path", "check": True, "placements": [{"x": 1}]})
 
 
-# ------------------------------------------------------------------ S2E1 end (matches watch.py + audit there)
+# ------------------------------------------------------------------ Late-game colony (matches watch.py + audit there)
 
-def test_s2e1_end_matches_harness(state, tmp_path):
+def test_late_game_matches_harness(state, tmp_path):
     world, ctx, findings = run(state, tmp_path)
     r = rules_of(findings)
     # audit.py --no-fix on this save: three workshops marked for emptying, science 655 unspent.

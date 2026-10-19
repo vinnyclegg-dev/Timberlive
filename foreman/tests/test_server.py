@@ -1,4 +1,4 @@
-"""The web service on the recorded S2E1 save: every route answers and stays read-only."""
+"""The web service on the recorded late-game save: every route answers and stays read-only."""
 
 from pathlib import Path
 
@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 from foreman import server
 
-FIXTURE = Path(__file__).parent / "fixtures" / "s2e1-end.json"
+FIXTURE = Path(__file__).parent / "fixtures" / "late-game.json"
 
 
 @pytest.fixture(scope="module")

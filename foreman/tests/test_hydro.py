@@ -1,4 +1,4 @@
-"""Water engineering on the S2E1 end fixture: existing pools, bodies and sources, the dam planner, decks,
+"""Water engineering on the late-game fixture: existing pools, bodies and sources, the dam planner, decks,
 badwater, and the water monitors."""
 
 import copy
@@ -12,7 +12,7 @@ from foreman.engine import analyse
 from foreman.store import Store
 from foreman.world import World
 
-FIXTURE = Path(__file__).with_name("fixtures") / "s2e1-end.json"
+FIXTURE = Path(__file__).with_name("fixtures") / "late-game.json"
 
 
 @pytest.fixture(scope="module")
@@ -47,7 +47,7 @@ def test_bodies_and_sources_traced(h):
     assert any(label.startswith("WaterSource(39-43,127-127") for label in labels)
     drain = next(g for g in h.source_groups if g["name"] == "BadtideDrain")
     assert drain["strength"] == 0                      # not flowing yet
-    assert h.cores() == []                             # S2E1 has no Unstable Cores
+    assert h.cores() == []                             # this map has no Unstable Cores
 
 
 def test_dam_planner_proposals_hold_and_do_not_leak(h):

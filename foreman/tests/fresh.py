@@ -1,11 +1,11 @@
-"""A fresh-start state built from the S2E1 end fixture: same terrain and water, only the District Centre,
+"""A fresh-start state built from the late-game fixture: same terrain and water, only the District Centre,
 no fields or marks, start goods (0 logs, 0 water, 130 berries: knowledge/08) and day-0 science."""
 
 import copy
 import json
 from pathlib import Path
 
-FIXTURE = Path(__file__).with_name("fixtures") / "s2e1-end.json"
+FIXTURE = Path(__file__).with_name("fixtures") / "late-game.json"
 CROPS = {"Kohlrabi", "Corn", "Canola", "Cassava", "Soybean", "Potato", "Wheat", "Carrot", "Sunflower", "Eggplant"}
 START = {"Berries": 130, "Log": 0, "Water": 0}
 

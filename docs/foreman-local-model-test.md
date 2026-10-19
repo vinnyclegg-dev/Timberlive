@@ -10,7 +10,7 @@ The driver is `foreman/local_model_driver.py`. It works with any OpenAI-compatib
 2. Start the model server and use a model that is good at tool calls. For example, with Ollama: `ollama serve`, then `ollama pull qwen3:14b`.
 3. **Never use the stream save.**
    - For `--live`, start a **new game** (`new_game`) or load a throwaway save.
-   - The driver never saves, but the game's own autosave does. A live run on `s2e1-end` would change it.
+   - The driver never saves, but the game's own autosave does. A live run on a save you care about would change it.
 
 ## Dry run (default; safe on any save)
 
@@ -72,7 +72,7 @@ The driver never narrates on the overlay, never saves and never touches OBS or p
 
 ## Tested
 
-- The driver ran end to end in dry mode against the `s2e1-end` fixture, using a scripted fake model.
+- The driver ran end to end in dry mode against the `late-game` fixture, using a scripted fake model.
 - The fake model did four things, and each gave the expected result:
 
   | What the fake model did | Result |

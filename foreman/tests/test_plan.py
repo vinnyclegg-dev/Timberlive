@@ -16,7 +16,7 @@ from foreman.world import World
 
 from fresh import fresh_state
 
-FIXTURE = Path(__file__).with_name("fixtures") / "s2e1-end.json"
+FIXTURE = Path(__file__).with_name("fixtures") / "late-game.json"
 LAND = ("SmallWarehouse", "BreedingPod", "FarmHouse", "Barrack", "SmallTank", "Inventor", "MediumWarehouse",
         "LumberjackFlag", "GathererFlag", "Forester", "Campfire")
 
