@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s5-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ece8e1;
+          font-family: Montserrat, sans-serif;
+        }
+        #s5-root .scene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0e1216;
+        }
+        #s5-root .glow {
+          position: absolute;
+          top: 260px;
+          width: 900px;
+          height: 700px;
+        }
+        #s5-root .glow.a {
+          left: 60px;
+          background: radial-gradient(ellipse at center, rgba(51, 115, 242, 0.14) 0%, rgba(51, 115, 242, 0) 70%);
+        }
+        #s5-root .glow.b {
+          right: 60px;
+          background: radial-gradient(ellipse at center, rgba(224, 145, 63, 0.14) 0%, rgba(224, 145, 63, 0) 70%);
+        }
+        #s5-root .layout {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 60px;
+        }
+        #s5-root .head {
+          display: block;
+          font-size: 76px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          line-height: 1.04;
+          text-align: center;
+        }
+        #s5-root .pair {
+          display: flex;
+          gap: 48px;
+          perspective: 1800px;
+        }
+        #s5-root .card {
+          position: relative;
+          width: 820px;
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+        }
+        #s5-root .frame {
+          position: relative;
+          width: 820px;
+          height: 520px;
+          border-radius: 18px;
+          overflow: hidden;
+          border: 1px solid rgba(236, 232, 225, 0.16);
+          background: #0e1114;
+        }
+        #s5-root .zoom {
+          position: absolute;
+          inset: 0;
+        }
+        #s5-root #s5-zoom-b {
+          transform: scale(1.4);
+        }
+        #s5-root .vid {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        #s5-root .label {
+          display: block;
+          font-size: 34px;
+          font-weight: 700;
+        }
+        #s5-root .sub {
+          display: block;
+          font-size: 28px;
+          font-weight: 500;
+          color: #b9b3aa;
+        }
+        #s5-root #s5-left .label,
+        #s5-root #s5-left .sub {
+          text-align: left;
+        }
+        #s5-root #s5-right .label,
+        #s5-root #s5-right .sub {
+          text-align: right;
+        }
+      </style>
+      <div id="s5-root" data-composition-id="s5-split" data-width="1920" data-height="1080">
+        <div class="scene" id="s5-scene">
+          <div class="glow a"></div>
+          <div class="glow b"></div>
+          <div class="layout">
+            <div id="s5-head" class="head">Look around, or cut through a cliff</div>
+            <div class="pair">
+              <div class="card" id="s5-left">
+                <div class="frame">
+                  <video id="s5-vid-a" class="clip vid" src="../assets/map3d-orbit-colony.mp4" muted playsinline
+                    data-start="0" data-duration="6" data-media-start="0" data-track-index="0"></video>
+                </div>
+                <div class="label">Orbit and zoom</div>
+                <div class="sub">Drag to turn, scroll to get close.</div>
+              </div>
+              <div class="card" id="s5-right">
+                <div class="frame">
+                  <div class="zoom" id="s5-zoom-b" data-layout-allow-overflow>
+                  <video id="s5-vid-b" class="clip vid" src="../assets/map3d-height-cut.mp4" muted playsinline
+                    data-start="0" data-duration="6" data-media-start="0" data-playback-rate="0.82" data-track-index="1"></video>
+                  </div>
+                </div>
+                <div class="label">Slice by height</div>
+                <div class="sub">See what lies under a cliff.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s5-scene", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 0);
+          tl.fromTo("#s5-head", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.2);
+          tl.fromTo("#s5-left", { opacity: 0, x: -160, rotationY: 14, scale: 0.88 }, { opacity: 1, x: 0, rotationY: 5, scale: 1, duration: 1.0, ease: "power3.out" }, 0.5);
+          tl.fromTo("#s5-right", { opacity: 0, x: 160, rotationY: -14, scale: 0.88 }, { opacity: 1, x: 0, rotationY: -5, scale: 1, duration: 1.0, ease: "power3.out" }, 0.7);
+          window.__timelines["s5-split"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+/* 1920x1080 layout. Game frame 1440x810 (exact 16:9, 75% scale) at (24,24). */
+:root {
+  --bg: rgba(18, 24, 20, 0.92);
+  --panel: rgba(30, 40, 33, 0.94);
+  --edge: #6b8f5e;
+  --text: #f1ecd9;
+  --muted: #a9b39a;
+  --accent: #e7b45a;
+  --good: #8fd16a;
+  --warn: #e7b45a;
+  --bad: #e5675a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text);
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+}
+
+#game-frame {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  width: 1440px;
+  height: 810px;
+  border: 4px solid var(--edge);
+  border-radius: 10px;
+  box-shadow: 0 0 0 9999px var(--bg);   /* darkens everything outside the game */
+}
+
+.frame-label {
+  position: absolute;
+  top: -2px;
+  left: 18px;
+  transform: translateY(-50%);
+  background: var(--edge);
+  color: #10140f;
+  font-weight: 700;
+  font-size: 17px;
+  padding: 2px 12px;
+  border-radius: 6px;
+}
+
+/* One line scrolls in from the right and out to the left (app.js). Sits over the bottom of the
+   game picture, where Timberborn's toolbar is; inner game area is x 28-1460, y 28-830. */
+#ticker {
+  position: absolute;
+  left: 28px;
+  top: 782px;
+  width: 1432px;
+  height: 48px;
+  overflow: hidden;
+  background: rgba(18, 24, 20, 0.9);
+  border-top: 2px solid var(--accent);
+  border-radius: 0 0 6px 6px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+#ticker.on { opacity: 1; }
+
+#ticker-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 46px;
+  white-space: nowrap;
+  font-size: 24px;
+  font-weight: 600;
+  transform: translateX(1432px);
+}
+
+.panel {
+  background: var(--panel);
+  border: 2px solid var(--edge);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#side {
+  position: absolute;
+  left: 1488px;
+  top: 24px;
+  width: 408px;
+  height: 1032px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* --k is a text scale that app.js lowers until a panel's content fits (see fit()). */
+.panel { --k: 1; }
+#thoughts-panel { flex: 1.25; overflow: hidden; min-height: 0; }
+#todo-panel { flex: 1; overflow: hidden; min-height: 0; }
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--good);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse { 50% { opacity: 0.25; } }
+
+#thoughts { list-style: none; margin: 0; padding: 0; }
+
+#thoughts li {
+  font-size: calc(20px * var(--k));
+  line-height: 1.35;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-left: 4px solid var(--edge);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  animation: slide-in 0.5s ease-out;
+}
+
+#thoughts li:first-child { border-left-color: var(--accent); font-size: calc(22px * var(--k)); }
+#thoughts li:nth-child(n+2) { opacity: 0.72; }
+#thoughts li:nth-child(n+4) { opacity: 0.45; }
+
+#thoughts .when { display: block; font-size: calc(13px * var(--k)); color: var(--muted); margin-top: 4px; }
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: none; }
+}
+
+#todos { list-style: none; margin: 0; padding: 0; }
+
+#todos li {
+  font-size: calc(19px * var(--k));
+  line-height: 1.3;
+  padding: calc(6px * var(--k)) 0 calc(6px * var(--k)) 34px;
+  position: relative;
+  transition: opacity 0.6s;
+}
+
+#todos li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--edge);
+  border-radius: 4px;
+}
+
+#todos li.done { color: var(--muted); text-decoration: line-through; opacity: 0.7; }
+#todos li.done::before { background: var(--good); border-color: var(--good); }
+#todos li.active { color: var(--accent); }
+#todos li.active::before { border-color: var(--accent); }
+#todos li.just-done { animation: tick 1s ease-out; }
+
+@keyframes tick { 0% { transform: scale(1.06); color: var(--good); } 100% { transform: none; } }
+
+#bottom {
+  position: absolute;
+  left: 24px;
+  top: 858px;
+  width: 1440px;
+  height: 198px;
+  display: flex;
+  gap: 18px;
+}
+
+#stats {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.35fr 1.25fr 1fr 1fr;
+  gap: 8px 18px;
+  align-content: center;
+}
+
+.stat { display: flex; flex-direction: column; }
+.stat .label { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.stat .value { font-size: 28px; font-weight: 700; }
+#s-time, #s-weather { font-size: 24px; white-space: nowrap; }
+.value.good { color: var(--good); }
+.value.warn { color: var(--warn); }
+.value.bad { color: var(--bad); }
+
+#chat-slot { width: 460px; display: flex; flex-direction: column; overflow: hidden; }
+#chat-slot h2 { font-size: calc(19px * var(--k)); line-height: 1.2; margin-bottom: calc(8px * var(--k)); display: block; }
+#poll-options { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: calc(5px * var(--k)); }
+#poll-options li { position: relative; display: flex; align-items: center; gap: 10px; padding: 4px 10px;
+  border-radius: 6px; background: rgba(255, 255, 255, 0.06); font-size: calc(18px * var(--k)); line-height: 1.2; overflow: hidden; }
+#poll-options .bar { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); opacity: 0.22;
+  transition: width 0.6s ease; }
+#poll-options .num { position: relative; font-weight: 700; color: var(--accent); width: 14px; }
+#poll-options .opt { position: relative; flex: 1; }
+#poll-options .count { position: relative; font-weight: 700; }
+#poll-options li.winner { outline: 2px solid var(--good); }
+#poll-footer { font-size: calc(15px * var(--k)); margin-top: auto; }
+.muted { color: var(--muted); font-size: 18px; margin: 0; }

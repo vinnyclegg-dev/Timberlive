@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TimberLive overlay</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 1920x1080 canvas. The game capture sits under the transparent #game-frame in OBS. -->
+  <div id="game-frame"><div class="frame-label">Claude plays Timberborn</div></div>
+  <!-- Ticker over the game's bottom toolbar; hidden while there is nothing to say. -->
+  <div id="ticker"><span id="ticker-text"></span></div>
+
+  <aside id="side">
+    <section id="thoughts-panel" class="panel">
+      <h2><span class="dot"></span>What I'm thinking</h2>
+      <ol id="thoughts"></ol>
+    </section>
+    <section id="todo-panel" class="panel">
+      <h2>The plan</h2>
+      <ul id="todos"></ul>
+    </section>
+  </aside>
+
+  <footer id="bottom">
+    <section id="stats" class="panel">
+      <div class="stat"><span class="label">Cycle</span><span id="s-time" class="value">-</span></div>
+      <div class="stat"><span class="label">Weather</span><span id="s-weather" class="value">-</span></div>
+      <div class="stat"><span class="label">Beavers</span><span id="s-pop" class="value">-</span></div>
+      <div class="stat"><span class="label">Water</span><span id="s-water" class="value">-</span></div>
+      <div class="stat"><span class="label">Food</span><span id="s-food" class="value">-</span></div>
+      <div class="stat"><span class="label">Logs</span><span id="s-logs" class="value">-</span></div>
+      <div class="stat"><span class="label">Science</span><span id="s-science" class="value">-</span></div>
+      <div class="stat"><span class="label">Wellbeing</span><span id="s-wellbeing" class="value">-</span></div>
+    </section>
+    <section id="chat-slot" class="panel">
+      <h2 id="poll-question">Viewer poll</h2>
+      <ol id="poll-options"></ol>
+      <p id="poll-footer" class="muted">No poll running right now</p>
+    </section>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

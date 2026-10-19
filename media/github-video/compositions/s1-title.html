@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s1-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0e1216;
+          color: #ece8e1;
+          font-family: Montserrat, sans-serif;
+        }
+        #s1-root .bgwrap {
+          position: absolute;
+          inset: 0;
+        }
+        #s1-root .bgvid {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.62;
+        }
+        #s1-root .vignette {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 62% 58% at 50% 50%, rgba(14, 18, 22, 0.5) 0%, rgba(14, 18, 22, 0.86) 100%);
+        }
+        #s1-root .lockup {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 26px;
+        }
+        #s1-root .icon {
+          display: block;
+          width: 148px;
+          height: 148px;
+          border-radius: 30px;
+        }
+        #s1-root .word {
+          display: block;
+          font-size: 150px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1;
+        }
+        #s1-root .bar {
+          display: block;
+          width: 220px;
+          height: 6px;
+          border-radius: 3px;
+          background: #e0913f;
+        }
+        #s1-root .tag {
+          display: block;
+          font-size: 54px;
+          font-weight: 600;
+          color: #d9d4cc;
+        }
+      </style>
+      <div id="s1-root" data-composition-id="s1-title" data-width="1920" data-height="1080">
+        <div class="bgwrap" id="s1-bgwrap" data-layout-allow-overflow>
+          <video id="s1-bgvid" class="clip bgvid" src="../assets/map3d-orbit-full.mp4" muted playsinline
+            data-start="0" data-duration="4.5" data-media-start="6" data-track-index="0"></video>
+        </div>
+        <div class="vignette"></div>
+        <div class="lockup">
+          <img id="s1-icon" class="icon" src="../assets/icon.png" alt="" />
+          <div id="s1-word" class="word">TimberLive</div>
+          <div id="s1-bar" class="bar"></div>
+          <div id="s1-tag" class="tag">Let your AI play Timberborn.</div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s1-bgwrap", { scale: 1.08 }, { scale: 1.0, duration: 4.5, ease: "none" }, 0);
+          tl.fromTo("#s1-icon", { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 0.25);
+          tl.fromTo("#s1-word", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.45);
+          tl.fromTo("#s1-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 0.95);
+          tl.fromTo("#s1-tag", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.15);
+          window.__timelines["s1-title"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

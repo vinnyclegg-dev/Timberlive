@@ -1,0 +1,24 @@
+# One Python runtime for the whole TimberLive app: the window, Foreman, the harness tools,
+# the overlay and the poll counter. packaging/make_runtime.py installs these into runtime/.
+
+# Harness (MCP server + scripts)
+httpx==0.28.1
+mcp==2.3.0
+obsws-python==1.8.0
+google-api-python-client==2.201.0
+google-auth-oauthlib==1.5.0
+google-auth-httplib2==0.4.4
+pillow==12.3.0
+
+# Foreman (advisor service)
+fastapi==0.143.3
+uvicorn==0.54.0
+numpy==2.4.6
+networkx==3.6.1
+PyYAML==6.0.3
+
+# App window
+pywebview==6.2.1
+
+# Tests (dev only, small)
+pytest

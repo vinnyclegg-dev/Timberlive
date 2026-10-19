@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TimberLive</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside>
+  <div class="brand"><img src="icon.png" alt=""><div><b>TimberLive</b><span id="ver" class="muted"></span></div></div>
+  <nav>
+    <a data-page="home" class="on">Home</a>
+    <a data-page="advisor">Advisor</a>
+    <a data-page="connect">Connect your AI</a>
+    <a data-page="stream">Stream</a>
+    <a data-page="experimental">Experimental</a>
+    <a data-page="help">Help</a>
+  </nav>
+  <div class="side-status">
+    <div><i id="dot-bridge" class="dot"></i>Game</div>
+    <div><i id="dot-foreman" class="dot"></i>Advisor</div>
+    <div><i id="dot-overlay" class="dot"></i>Overlay</div>
+  </div>
+</aside>
+
+<main>
+  <!-- HOME -->
+  <section id="home" class="page on">
+    <h1>Get ready to play</h1>
+    <p class="muted">Your AI plays Timberborn with the tools this app ships. Work down the list once; after that just open
+      the app, start the game and point your AI at the workspace.</p>
+    <ol class="steps" id="steps"></ol>
+    <h2>Services <span class="muted small">(run while this window is open)</span></h2>
+    <div class="grid" id="services"></div>
+  </section>
+
+  <!-- ADVISOR -->
+  <section id="advisor" class="page fill">
+    <div id="advisor-down" class="card hidden">
+      <h3>Advisor not running</h3>
+      <p>Foreman watches the game and checks every rule for your AI. <button data-start="foreman">Start it</button></p>
+    </div>
+    <iframe id="advisor-frame" title="Foreman advisor"></iframe>
+  </section>
+
+  <!-- CONNECT -->
+  <section id="connect" class="page">
+    <h1>Connect your AI</h1>
+    <p class="muted">The app doesn't play: your AI does, with two tool servers it starts itself.
+      <b>timberlive</b> observes and acts in the game; <b>foreman</b> is a read-only advisor (keep this window open for it).
+      The workspace folder holds the playbook (<code>AGENTS.md</code>), the knowledge notes and the harness scripts.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Claude Code <span id="cc-state" class="pill"></span></h3>
+        <p>Best experience: Claude Code can run the harness scripts (<code>watch.py</code>, map surveys, the opening
+          planner) as well as the tools.</p>
+        <div class="row"><button class="primary" data-act="connect_claude_code">Set up workspace</button>
+          <button data-act="open_claude_code">Open Claude Code here</button>
+          <button data-act="open_vscode">Open in VS Code</button></div>
+        <p class="small muted">Workspace: <code id="cc-ws"></code></p>
+      </div>
+      <div class="card">
+        <h3>Claude Desktop <span id="cd-state" class="pill"></span></h3>
+        <p>Adds both tool servers to Claude Desktop. It can play with the tools, but can't run the harness scripts.</p>
+        <div class="row"><button class="primary" data-act="connect_claude_desktop">Add to Claude Desktop</button></div>
+        <p class="small muted">Config: <code id="cd-cfg"></code></p>
+      </div>
+      <div class="card wide">
+        <h3>Any other MCP client</h3>
+        <p>Paste this into your client's MCP settings (Cursor, Codex, Gemini CLI, Continue, ...). For a client that can run
+          shell commands, also open the workspace folder and tell it to read <code>AGENTS.md</code>.</p>
+        <pre id="snippet"></pre>
+        <button id="copy-snippet">Copy</button>
+      </div>
+    </div>
+    <h2>First message to your AI</h2>
+    <pre id="first-msg">Read AGENTS.md, then check the game with the timberlive ping tool and tell me what you see.
+Stay paused until I say go.</pre>
+    <button id="copy-first">Copy</button>
+  </section>
+
+  <!-- STREAM -->
+  <section id="stream" class="page">
+    <h1>Stream</h1>
+    <p class="muted">Optional. The overlay shows your AI's thoughts and plan on stream; viewers vote in polls and only the
+      vote counts reach the AI, never chat text.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Overlay</h3>
+        <div class="preview"><iframe id="overlay-frame" title="overlay preview"></iframe></div>
+        <p class="small">OBS browser source: <code id="overlay-url"></code> (1920×1080, transparent)</p>
+      </div>
+      <div class="card">
+        <h3>OBS Studio <span id="obs-state" class="pill"></span></h3>
+        <ol class="small">
+          <li><button data-act="make_obs_collection">Make the scene collection</button> then in OBS: Scene Collection &gt; Import.</li>
+          <li>In OBS: Tools &gt; WebSocket Server Settings &gt; enable (lets your AI switch slates).</li>
+        </ol>
+        <label>Scene collection name <input id="obs-collection"></label>
+        <label>Profile <input id="obs-profile"></label>
+        <div class="row"><button data-act="save_obs">Save names</button> <button data-act="open_obs">Open OBS</button></div>
+      </div>
+      <div class="card">
+        <h3>YouTube polls <span id="yt-state" class="pill"></span></h3>
+        <p class="small muted">A YouTube Data API key (Google Cloud console) reads live-chat votes. It's stored on this PC
+          only and never shown again or given to the AI.</p>
+        <label>API key <input id="yt-key" type="password" placeholder="leave blank to keep the saved key" autocomplete="off"></label>
+        <label>Channel id <input id="yt-channel" placeholder="UC..."></label>
+        <label>Live video id <span class="muted">(optional)</span> <input id="yt-video"></label>
+        <div class="row"><button data-act="save_youtube">Save</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIMENTAL -->
+  <section id="experimental" class="page">
+    <h1>Experimental: a local model plays</h1>
+    <p class="muted">For testing a model served by Ollama, LM Studio or vLLM (OpenAI-compatible API) on the same tools,
+      guided by the advisor. A dry run only talks; a live run acts in the game and must use a new game or a throwaway save.</p>
+    <div class="card narrow">
+      <label>API base URL <input id="lm-url" value="http://127.0.0.1:11434/v1"></label>
+      <label>Model <input id="lm-model" placeholder="qwen3:14b"></label>
+      <label class="check"><input id="lm-live" type="checkbox"> Live (acts in the game: test saves only)</label>
+      <div class="row"><button class="primary" id="lm-run">Start</button></div>
+    </div>
+  </section>
+
+  <!-- HELP -->
+  <section id="help" class="page">
+    <h1>Help</h1>
+    <div class="grid">
+      <div class="card">
+        <h3>Files</h3>
+        <div class="col">
+          <button data-open="agents">The AI's playbook (AGENTS.md)</button>
+          <button data-open="knowledge">Knowledge notes</button>
+          <button data-open="workspace">Workspace folder</button>
+          <button data-open="mods">Timberborn Mods folder</button>
+          <button data-open="logs">App logs</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>How it fits together</h3>
+        <ul class="small">
+          <li><b>Bridge mod</b> (in Timberborn): a local-only API, guarded by a per-launch token. Player tools only.</li>
+          <li><b>timberlive tools</b>: your AI's hands and eyes, through the mod.</li>
+          <li><b>Foreman</b>: watches, checks rules and suggests exact calls; never acts.</li>
+          <li><b>Overlay + polls</b>: what viewers see; vote counts only reach the AI.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Service logs</h3>
+        <select id="log-pick"><option>foreman</option><option>overlay</option><option>polls</option></select>
+        <pre id="log" class="log"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

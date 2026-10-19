@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s3-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ece8e1;
+          font-family: Montserrat, sans-serif;
+        }
+        #s3-root .scene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0e1114;
+        }
+        #s3-root .vid {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        #s3-root .caption {
+          position: absolute;
+          left: 110px;
+          top: 80px;
+          width: 980px;
+          padding: 36px 44px 40px;
+          border-radius: 22px;
+          background: rgba(14, 17, 20, 0.86);
+          border: 1px solid rgba(236, 232, 225, 0.12);
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        #s3-root .kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          color: #e0913f;
+        }
+        #s3-root .head {
+          display: block;
+          font-size: 76px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          line-height: 1.04;
+        }
+        #s3-root .body {
+          display: block;
+          font-size: 34px;
+          font-weight: 500;
+          color: #d9d4cc;
+          max-width: 880px;
+        }
+        #s3-root .legend {
+          position: absolute;
+          left: 110px;
+          right: 110px;
+          bottom: 84px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+        }
+        #s3-root .chip {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 12px 20px;
+          border-radius: 40px;
+          background: rgba(22, 27, 33, 0.88);
+          border: 1px solid rgba(236, 232, 225, 0.14);
+          font-size: 24px;
+          font-weight: 600;
+        }
+        #s3-root .sw {
+          display: block;
+          width: 22px;
+          height: 22px;
+          border-radius: 6px;
+        }
+      </style>
+      <div id="s3-root" data-composition-id="s3-orbit" data-width="1920" data-height="1080">
+        <div class="scene" id="s3-scene">
+          <video id="s3-vid" class="clip vid" src="../assets/map3d-orbit-full.mp4" muted playsinline
+            data-start="0" data-duration="8.5" data-media-start="0" data-track-index="0"></video>
+          <div class="caption">
+            <div id="s3-kicker" class="kicker">FOREMAN · 3D MAP</div>
+            <div id="s3-head" class="head">The map, rebuilt in 3D</div>
+            <div id="s3-body" class="body">Heights, rivers, badwater, caves and buildings, straight from the game.</div>
+          </div>
+          <div class="legend">
+            <div class="chip s3-chip"><span class="sw" style="background: #3373f2"></span>Clean water</div>
+            <div class="chip s3-chip"><span class="sw" style="background: #b8508f"></span>Badwater</div>
+            <div class="chip s3-chip"><span class="sw" style="background: #8fc78a"></span>Moist soil</div>
+            <div class="chip s3-chip"><span class="sw" style="background: #d48ac2"></span>Contaminated soil</div>
+            <div class="chip s3-chip"><span class="sw" style="background: #ff3b3b"></span>Dam sites Foreman proposes</div>
+            <div class="chip s3-chip"><span class="sw" style="background: #ffa030"></span>Under construction</div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s3-scene", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 0);
+          tl.fromTo("#s3-kicker", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.5);
+          tl.fromTo("#s3-head", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.65);
+          tl.fromTo("#s3-body", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.0);
+          tl.fromTo(".s3-chip", { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.7)", stagger: 0.14 }, 2.2);
+          window.__timelines["s3-orbit"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

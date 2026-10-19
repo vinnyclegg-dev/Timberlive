@@ -1,0 +1,9 @@
+{
+  "Name": "TimberLive Bridge",
+  "Version": "0.1.0",
+  "Id": "TimberLive.Bridge",
+  "MinimumGameVersion": "1.1.0.0",
+  "Description": "Local-only HTTP bridge that lets an AI agent observe and play the game with the same actions available to a player.",
+  "RequiredMods": [],
+  "OptionalMods": []
+}

@@ -1,0 +1,27 @@
+_decompiled/
+bin/
+obj/
+*.user
+.secrets/
+.venv/
+__pycache__/
+foreman/data/
+.pytest_cache/
+.claude/settings.local.json
+# runtime state and scratch
+harness/cache/
+harness/*.tmp.py
+harness/*.pkl
+harness/*.png
+overlay/state.json
+overlay/poll_counts.json
+overlay/userscript_seen.json
+runtime/
+logs/
+packaging/dist/
+packaging/stage/
+media/github-preview/
+media/github-video/renders/
+media/github-video/.hyperframes/
+media/github-video/snaps/
+node_modules/

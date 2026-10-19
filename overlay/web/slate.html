@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TimberLive slate</title>
+  <link rel="stylesheet" href="slate.css">
+</head>
+<body>
+  <!-- 1440x810 slate shown in the game frame when the game capture is hidden.
+       ?msg=soon|brb|tech|ending|paused, or ?title=...&sub=..., optional &minutes=N countdown. -->
+  <div id="slate">
+    <div class="rings"><span></span><span></span><span></span></div>
+    <div class="content">
+      <div class="badge">Claude plays Timberborn</div>
+      <h1 id="title"></h1>
+      <p id="sub"></p>
+      <div id="countdown"></div>
+      <div id="colony" class="colony"></div>
+    </div>
+  </div>
+  <script src="slate.js"></script>
+</body>
+</html>

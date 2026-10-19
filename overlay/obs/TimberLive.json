@@ -1,0 +1,559 @@
+{
+  "name": "TimberLive",
+  "current_scene": "TimberLive - Game",
+  "current_program_scene": "TimberLive - Game",
+  "scene_order": [
+    {
+      "name": "TimberLive - Game"
+    }
+  ],
+  "sources": [
+    {
+      "prev_ver": 503447555,
+      "name": "TimberLive - Game",
+      "uuid": "23ffe34f-b19e-46df-8432-3c8060dad9b9",
+      "id": "scene",
+      "versioned_id": "scene",
+      "settings": {
+        "id_counter": 20,
+        "custom_size": false,
+        "items": [
+          {
+            "name": "Slate: Starting soon",
+            "source_uuid": "ed82b538-b162-43be-b89e-4f2924a3f9e4",
+            "visible": false,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 11,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Slate: Be right back",
+            "source_uuid": "cc271bf4-5782-4257-a0c5-b7899bc6853c",
+            "visible": false,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 12,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Slate: Game paused",
+            "source_uuid": "305793d2-ace1-4da5-8c08-ce5cfb512ab1",
+            "visible": false,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 13,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Slate: Technical difficulties",
+            "source_uuid": "6c0e7688-c421-428b-b83e-b9b06b5b5673",
+            "visible": false,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 14,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Slate: Thanks for watching",
+            "source_uuid": "1573f81a-78bb-4674-a36a-70edbfde22b8",
+            "visible": false,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 15,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "Timberborn (game)",
+            "source_uuid": "d9c77e84-7494-4519-ab73-d1313bc540b9",
+            "visible": true,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 24.0,
+              "y": 24.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 2,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 1440.0,
+              "y": 810.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 1,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          },
+          {
+            "name": "TimberLive overlay",
+            "source_uuid": "dc6eca2d-e87e-4baf-97a9-c92acb1d0c26",
+            "visible": true,
+            "locked": true,
+            "rot": 0.0,
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 2,
+            "group_item_backup": false,
+            "scale_filter": "bicubic",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "show_transition": {
+              "duration": 0
+            },
+            "hide_transition": {
+              "duration": 0
+            },
+            "private_settings": {}
+          }
+        ]
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Timberborn (game)",
+      "uuid": "d9c77e84-7494-4519-ab73-d1313bc540b9",
+      "id": "game_capture",
+      "versioned_id": "game_capture",
+      "settings": {
+        "capture_mode": "window",
+        "window": "Timberborn:UnityWndClass:Timberborn.exe",
+        "priority": 2,
+        "capture_cursor": true,
+        "allow_transparency": false,
+        "capture_audio": true
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "TimberLive overlay",
+      "uuid": "dc6eca2d-e87e-4baf-97a9-c92acb1d0c26",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "shutdown": false,
+        "restart_when_active": false,
+        "reroute_audio": false,
+        "css": "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Slate: Starting soon",
+      "uuid": "ed82b538-b162-43be-b89e-4f2924a3f9e4",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/slate.html?msg=soon&colony=off",
+        "width": 1440,
+        "height": 810,
+        "fps": 30,
+        "shutdown": true,
+        "restart_when_active": true,
+        "reroute_audio": false,
+        "css": "body { margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Slate: Be right back",
+      "uuid": "cc271bf4-5782-4257-a0c5-b7899bc6853c",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/slate.html?msg=brb",
+        "width": 1440,
+        "height": 810,
+        "fps": 30,
+        "shutdown": true,
+        "restart_when_active": true,
+        "reroute_audio": false,
+        "css": "body { margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Slate: Game paused",
+      "uuid": "305793d2-ace1-4da5-8c08-ce5cfb512ab1",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/slate.html?msg=paused",
+        "width": 1440,
+        "height": 810,
+        "fps": 30,
+        "shutdown": true,
+        "restart_when_active": true,
+        "reroute_audio": false,
+        "css": "body { margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Slate: Technical difficulties",
+      "uuid": "6c0e7688-c421-428b-b83e-b9b06b5b5673",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/slate.html?msg=tech",
+        "width": 1440,
+        "height": 810,
+        "fps": 30,
+        "shutdown": true,
+        "restart_when_active": true,
+        "reroute_audio": false,
+        "css": "body { margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    },
+    {
+      "prev_ver": 503447555,
+      "name": "Slate: Thanks for watching",
+      "uuid": "1573f81a-78bb-4674-a36a-70edbfde22b8",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "settings": {
+        "url": "http://127.0.0.1:8096/slate.html?msg=ending&colony=off",
+        "width": 1440,
+        "height": 810,
+        "fps": 30,
+        "shutdown": true,
+        "restart_when_active": true,
+        "reroute_audio": false,
+        "css": "body { margin: 0px auto; overflow: hidden; }"
+      },
+      "mixers": 255,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1.0,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "push-to-mute": false,
+      "push-to-mute-delay": 0,
+      "push-to-talk": false,
+      "push-to-talk-delay": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {}
+    }
+  ],
+  "groups": [],
+  "quick_transitions": [],
+  "transitions": [],
+  "saved_projectors": [],
+  "current_transition": "Fade",
+  "transition_duration": 300,
+  "preview_locked": false,
+  "scaling_enabled": false,
+  "scaling_level": 0,
+  "scaling_off_x": 0.0,
+  "scaling_off_y": 0.0,
+  "modules": {},
+  "resolution": {
+    "x": 1920,
+    "y": 1080
+  }
+}

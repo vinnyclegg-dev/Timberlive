@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0e1216;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0e1216;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Scenes overlap by 0.5 s; each later scene fades its own content in over the one before (crossfade). -->
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="44.5"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="s1-title" data-composition-id="s1-title" data-composition-src="compositions/s1-title.html"
+        data-start="0" data-duration="4.5" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <div id="s2-game" data-composition-id="s2-game" data-composition-src="compositions/s2-game.html"
+        data-start="4" data-duration="6" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="s3-orbit" data-composition-id="s3-orbit" data-composition-src="compositions/s3-orbit.html"
+        data-start="9.5" data-duration="8.5" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <div id="s4-layers" data-composition-id="s4-layers" data-composition-src="compositions/s4-layers.html"
+        data-start="17.5" data-duration="8" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="s5-split" data-composition-id="s5-split" data-composition-src="compositions/s5-split.html"
+        data-start="25" data-duration="6" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <div id="s6-foreman" data-composition-id="s6-foreman" data-composition-src="compositions/s6-foreman.html"
+        data-start="30.5" data-duration="5.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <div id="s7-app" data-composition-id="s7-app" data-composition-src="compositions/s7-app.html"
+        data-start="35.5" data-duration="5" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <div id="s8-end" data-composition-id="s8-end" data-composition-src="compositions/s8-end.html"
+        data-start="40" data-duration="4.5" data-track-index="1" data-width="1920" data-height="1080"></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

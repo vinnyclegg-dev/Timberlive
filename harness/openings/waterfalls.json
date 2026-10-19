@@ -1,0 +1,249 @@
+{
+ "map": "Waterfalls (Iron Teeth, 128x128). DC (72,70,5) door (73,69).",
+ "roads": [
+  [
+   60,
+   69,
+   86,
+   69,
+   5
+  ],
+  [
+   79,
+   44,
+   79,
+   68,
+   5
+  ],
+  [
+   74,
+   57,
+   78,
+   57,
+   5
+  ],
+  [
+   75,
+   44,
+   75,
+   56,
+   5
+  ]
+ ],
+ "buildings": [
+  {
+   "template": "LumberjackFlag",
+   "count": 2,
+   "near": [
+    63,
+    70
+   ],
+   "radius": 6,
+   "range": "trees",
+   "note": "pine x56-67 y73-84"
+  },
+  {
+   "template": "GathererFlag",
+   "count": 2,
+   "near": [
+    65,
+    68
+   ],
+   "radius": 6,
+   "range": "bushes",
+   "note": "79 blueberry bushes x57-72 y59-68"
+  },
+  {
+   "template": "DeepWaterPump",
+   "count": 1,
+   "near": [
+    75,
+    54
+   ],
+   "radius": 6,
+   "water": true,
+   "note": "first build: 0 water at start",
+   "priority": "VeryHigh"
+  },
+  {
+   "template": "SmallTank",
+   "count": 1,
+   "near": [
+    76,
+    53
+   ],
+   "radius": 5,
+   "good": "Water",
+   "priority": "VeryHigh"
+  },
+  {
+   "template": "FarmHouse",
+   "count": 1,
+   "near": [
+    80,
+    60
+   ],
+   "radius": 8,
+   "range": "plots",
+   "priority": "High"
+  },
+  {
+   "template": "SmallIndustrialPile",
+   "count": 1,
+   "near": [
+    67,
+    70
+   ],
+   "radius": 5,
+   "good": "Log"
+  },
+  {
+   "template": "SmallWarehouse",
+   "count": 1,
+   "near": [
+    70,
+    68
+   ],
+   "radius": 5,
+   "good": "Berries"
+  },
+  {
+   "template": "Inventor",
+   "count": 1,
+   "near": [
+    77,
+    70
+   ],
+   "radius": 6
+  },
+  {
+   "template": "BreedingPod",
+   "count": 3,
+   "near": [
+    76,
+    70
+   ],
+   "radius": 6
+  },
+  {
+   "template": "Barrack",
+   "count": 1,
+   "near": [
+    83,
+    70
+   ],
+   "radius": 6
+  },
+  {
+   "template": "DeepWaterPump",
+   "count": 1,
+   "near": [
+    75,
+    50
+   ],
+   "radius": 7,
+   "water": true,
+   "note": "second pump"
+  },
+  {
+   "template": "SmallTank",
+   "count": 1,
+   "near": [
+    76,
+    50
+   ],
+   "radius": 6,
+   "good": "Water"
+  },
+  {
+   "template": "LumberjackFlag",
+   "count": 1,
+   "near": [
+    78,
+    45
+   ],
+   "radius": 5,
+   "range": "trees",
+   "note": "birch x74-87 y29-43: clears the dam's east end and farmland"
+  }
+ ],
+ "cut": [
+  [
+   56,
+   73,
+   67,
+   84
+  ],
+  [
+   74,
+   36,
+   80,
+   43
+  ]
+ ],
+ "plant": [
+  {
+   "plant": "Kohlrabi",
+   "rect": [
+    78,
+    44,
+    89,
+    68
+   ],
+   "from": "FarmHouse"
+  },
+  {
+   "plant": "Kohlrabi",
+   "rect": [
+    76,
+    44,
+    77,
+    57
+   ],
+   "from": "FarmHouse"
+  },
+  {
+   "plant": "Kohlrabi",
+   "rect": [
+    76,
+    64,
+    77,
+    68
+   ],
+   "from": "FarmHouse"
+  }
+ ],
+ "lines": [
+  {
+   "template": "Dam",
+   "z": 4,
+   "tiles": [
+    [
+     68,
+     36
+    ],
+    [
+     69,
+     36
+    ],
+    [
+     70,
+     36
+    ],
+    [
+     71,
+     36
+    ],
+    [
+     72,
+     36
+    ],
+    [
+     73,
+     36
+    ]
+   ],
+   "note": "last choke before the drop into the badwater basin"
+  }
+ ]
+}

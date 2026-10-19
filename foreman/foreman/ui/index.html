@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Foreman</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/ui/style.css">
+<!-- three.js r169 (MIT licence, https://threejs.org) is vendored in /ui/vendor for the 3D map. -->
+<script type="importmap">{"imports": {"three": "/ui/vendor/three.module.min.js"}}</script>
+</head>
+<body>
+<header>
+  <strong>Foreman</strong>
+  <nav id="nav">
+    <a href="#overview">Overview</a>
+    <a href="#findings">Findings</a>
+    <a href="#buildings">Buildings</a>
+    <a href="#supply">Supply</a>
+    <a href="#map">Map 2D</a>
+    <a href="#map3d">Map 3D</a>
+    <a href="#water">Water</a>
+    <a href="#plan">Plan</a>
+    <a href="#requests">Requests</a>
+    <a href="#rules">Rules</a>
+  </nav>
+  <span id="status" class="muted"></span>
+</header>
+<main id="page"></main>
+<footer class="muted">Read-only advisor: Foreman never changes the game. Every fix is a harness call for the playing AI to run.</footer>
+<script type="module" src="/ui/app.js"></script>
+</body>
+</html>

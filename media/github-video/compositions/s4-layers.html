@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s4-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ece8e1;
+          font-family: Montserrat, sans-serif;
+        }
+        #s4-root .scene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0e1216;
+        }
+        #s4-root .glow {
+          position: absolute;
+          left: 360px;
+          top: 300px;
+          width: 1200px;
+          height: 700px;
+          background: radial-gradient(ellipse at center, rgba(224, 145, 63, 0.13) 0%, rgba(224, 145, 63, 0) 70%);
+        }
+        #s4-root .world {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 56px;
+          transform-origin: 50% 55%;
+        }
+        #s4-root .title {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+        }
+        #s4-root .kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          color: #e0913f;
+        }
+        #s4-root .head {
+          display: block;
+          font-size: 84px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          line-height: 1.04;
+        }
+        #s4-root .grid {
+          display: flex;
+          gap: 36px;
+        }
+        #s4-root .card {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          width: 404px;
+        }
+        #s4-root .card img {
+          display: block;
+          width: 404px;
+          height: 404px;
+          border-radius: 14px;
+          border: 1px solid rgba(236, 232, 225, 0.16);
+          background: #161b21;
+        }
+        #s4-root .label {
+          display: block;
+          font-size: 30px;
+          font-weight: 700;
+          text-align: center;
+        }
+      </style>
+      <div id="s4-root" data-composition-id="s4-layers" data-width="1920" data-height="1080">
+        <div class="scene" id="s4-scene">
+          <div class="glow"></div>
+          <div class="world" id="s4-world" data-layout-allow-overflow>
+            <div class="title">
+              <div id="s4-kicker" class="kicker">FOREMAN · 2D MAP</div>
+              <div id="s4-head" class="head">Every layer, in 2D</div>
+            </div>
+            <div class="grid">
+              <div class="card s4-card"><img src="../assets/map2d-terrain-water.png" alt="" /><div class="label">Terrain and water</div></div>
+              <div class="card s4-card"><img src="../assets/map2d-moisture-fields.png" alt="" /><div class="label">Moisture and fields</div></div>
+              <div class="card s4-card"><img src="../assets/map2d-roads-findings.png" alt="" /><div class="label">Roads and findings</div></div>
+              <div class="card s4-card"><img src="../assets/map2d-work-range.png" alt="" /><div class="label">Work ranges</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s4-scene", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 0);
+          tl.fromTo("#s4-kicker", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.3);
+          tl.fromTo("#s4-head", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.4);
+          tl.fromTo(".s4-card", { opacity: 0, y: 60, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.22 }, 0.8);
+          tl.fromTo("#s4-world", { scale: 1.0 }, { scale: 1.06, duration: 6.4, ease: "none" }, 1.6);
+          window.__timelines["s4-layers"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

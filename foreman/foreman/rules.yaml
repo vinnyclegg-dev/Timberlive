@@ -1,0 +1,1077 @@
+# Foreman rulebook: every distinct, checkable play rule extracted from CLAUDE.md, AGENTS.md,
+# knowledge/08-lessons-next-playthrough.md, knowledge/07-game-plan-v4.md and the operator's feedback memories.
+# kind: monitor (live game state) | guard (before a placement/planting action) | plan (needs a planner) | conduct (AI behaviour)
+# phase: 1 core, 2 monitors, 4 water/3D, 5 masterplan+checker, 6 any-AI, 0 conduct that stays manual
+
+# ---- water
+- id: water-low-stop
+  text: "Water stock below 2 per beaver (under a day of drinking) is an emergency: unpause and staff every pump, stop other water users such as pods until stock recovers, and hold off growth."
+  source: "CLAUDE.md; operator rules: breeding-pods"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: hazard-reserve-1.5x
+  text: "Before each drought or badtide hold 1.5 x the longest hazard so far (plus 2 days as hazards lengthen, 1.5 river-refill days for water and about 3 regrowth days for food) x daily use, scaled to the projected beaver count: water >= 26 x beavers plus building water and food >= 32 x beavers at a 7-day longest hazard, never raw totals."
+  source: "CLAUDE.md; operator rules: hazard-reserve; knowledge/08 Lakes ep3 c6d1"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: building-water-counted
+  text: "Count building water in every water budget and hazard reserve on top of beaver drinking (about 2.5 per beaver per day): Breeding Pod 1/day, Hydroponic Garden ~3/day, Steam Engine ~7/day, Coffee Brewery 1 per 4 coffee."
+  source: "CLAUDE.md; operator rules: building-water"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: overbuild-water-pumps
+  text: "Size water production at 1.5-2x daily consumption, not break-even: about 1 deep water pump per 5 beavers (~2.8 water per beaver per day), with a clearly positive net change per day."
+  source: "operator rule: overbuild-food-water; AGENTS.md"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: reserve-storage-capacity
+  text: "Build tank capacity for the water reserve a cycle before the warning (about 1 Small Tank per ~2 beavers before drought 3), sized for the late-drought rate (use climbed from ~35-60 to 105-145 a day as pools sank) and measured over a whole day, not one chunk."
+  source: "knowledge/08 Lakes ep3 c4d17-c8d1; S2 c7d13"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: drought-pumps
+  text: "When a drought starts and tanks already hold the reserve (water >= 26 x beavers), pause the pumps (all, or all but one) so the river stays high for the crops, and unpause or re-staff them on a critical thirst alert, when under 1 day of drought remains, or when it ends."
+  source: "operator rule: drought-pumps; knowledge/08 Lakes ep3 c11 and ep6 c16d25"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: pump-clean-intake
+  text: "Never place or keep a water pump whose intake is badwater: check the intake water for contamination before placing, because scan_spots and check=True do not test water quality."
+  source: "knowledge/08 S2E1 c1-c9; operator rules: audit-subagents"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: pump-sites-final-population
+  text: "In the opening survey plan pump sites for the final population (1 per 5 beavers on dry footprint tiles over clean deep water, platform decks over a clean creek, dam ponds) and keep the river-bank row free of paths by running roads one tile inland."
+  source: "knowledge/08 S2E1 post-mortem; Lakes ep3 c3d9"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: pump-pool-separate
+  text: "A pump stops when no water stands at its intake, so keep the pump pool held deep by a dam and separate from the water drawn for irrigation."
+  source: "plan v4; operator rules: water-systems"
+  kind: plan
+  severity: warn
+  phase: 4
+
+# ---- food
+- id: food-days-min-3
+  text: "Food days (edible stock / (3 x beavers)) must never fall below 3 at any time of the cycle; zero food is a cliff, with ~3 days at 0 killing 20+ beavers within a day."
+  source: "CLAUDE.md; knowledge/08 run 3 post-mortem"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: food-edible-only
+  text: "Count only edible goods as food: raw Cassava, Soybean, Corn, Eggplant and Potato are ingredients until a Fermenter, Food Factory or Grill processes them."
+  source: "CLAUDE.md; knowledge/08 Cycle 6"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: food-variety
+  text: "Every edible good that has a store assigned should hold stock; a store set to a good with 0 in stock means a stalled food chain and lost food-variety wellbeing."
+  source: "operator rule: wellbeing; knowledge/08 Wellbeing"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: food-jobs-staffed-first
+  text: "Staff food and water jobs first every day: no farmhouse, food workshop, pump or gatherer may sit at 0 workers while other buildings are staffed."
+  source: "knowledge/08 run 3 post-mortem; plan v4 section 5"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: food-crisis-mode
+  text: "Below 1.5 food days or when beavers starve, run only food, water and power jobs: pause every other workplace, cut idle builders, set empty farmhouses to VeryHigh and keep a few key food buildings fully staffed rather than many thinly, then unpause as the population recovers."
+  source: "plan v4 section 5; knowledge/08 Cycle 6 and Lakes c18d3-5; operator rules: tune-workers-priority"
+  kind: monitor
+  severity: critical
+  phase: 2
+
+- id: food-hoard
+  text: "Hoard food well above the 1.5x reserve (aim for 2x or more, covering the hazard plus the regrowth gap) in Medium Warehouses with the food good set, because post-hazard famines come from the replant gap."
+  source: "operator rule: hoard-food-storage; knowledge/08 Lakes ep3 c6d2 and c5d2"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: farmhouse-split
+  text: "Farmhouses default to planting first, so set new ones to harvest first (UnprioritizePlanting); with 2 or more, put about 1 in 3 on PrioritizePlanting and the rest on harvest first."
+  source: "operator rule: farmhouse-split; knowledge/08 Food and Lakes ep3 c3d12"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: farm-flag-recheck
+  text: "When food days fall while fields are full, first check each FarmHouse PlantingPrioritized flag and that every food manufactory is unpaused and not marked for emptying; flip all farmhouses to harvest-first in a food emergency, then split again once stocked."
+  source: "knowledge/08 Lakes ep6 c14d8-9"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: farm-plots-per-house
+  text: "Plan 1 FarmHouse (2 workers, fully staffed) per ~55 plots within its range, and about 4 kohlrabi plots per beaver sized for the population expected 20-30 days ahead, laying new fields once beavers pass ~3 per 10 plots."
+  source: "knowledge/08 Food and c8; plan v4 section 5; operator rules: maximise-planting"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: gatherers-3-plus
+  text: "Start with 3+ Gatherer Flags on the berries, keep them running while ripe bushes stay unpicked (add a warehouse rather than pausing when the store is full), and keep about 2 days of berry storage per gatherer."
+  source: "knowledge/08 Storage, Pressure test run c1d5 and c3d8; plan v4 stage 1"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: kohlrabi-phase-out
+  text: "Kohlrabi is the opening crop only: once rations flow on drought-proof power, switch one field block at a time to Corn (clear_planting, then plant_area Corn as tiles are harvested), only while food days stay on target and never inside a hazard warning."
+  source: "plan v4 section 4; operator rules: corn-food"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: corn-chain-early
+  text: "Put the corn chain on the early science path and build processors with the first field of a raw crop: Food Factory (300 science, power, 1 Corn -> 5 rations) needs MetalBlock from a Smelter (300 science, scrap from a Scavenger), with Food Factories sized to the corn harvest and Large warehouses before rations or raw corn cap out."
+  source: "operator rule: corn-food; knowledge/08 Cycle 6, Lakes ep3 c6d2, S2E1 post-mortem"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: food-drought-proof-chain
+  text: "Base food on what can still be processed in a drought: stockpile raw Corn and Mushroom in warehouses with drought-proof power and water on the processing chain; crops in the ground are not a reserve, and raw stock counts toward food days only when its processor has drought-proof power."
+  source: "operator rule: drought-proof-food; plan v4 section 4; knowledge/08 Pressure test run"
+  kind: plan
+  severity: critical
+  phase: 5
+
+- id: food-spread-failure-modes
+  text: "Spread food over all three failure modes by cycle 4 (river-watered crops, reservoir- or pond-watered crops, and indoor Hydroponic Gardens that ignore drought and badtide, sited with their Oil Press, canola and oil tank chain), building the gardens before the first badtide, not mid-famine."
+  source: "knowledge/08 run 3 post-mortem and S2E1 post-mortem; CLAUDE.md"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: fermenter-per-gardens
+  text: "Run 1 Fermenter per 2-3 Hydroponic Gardens, because one Fermenter's 16-unit mushroom input buffer could not absorb 6 gardens."
+  source: "knowledge/08 Lakes ep6 c17d8-9; plan v4 section 5"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+# ---- population
+- id: pods-only-on-food-target
+  text: "Breeding pods run only while food days are on target (read FOOD DAYS >= 3 in the report, not a forecast): pause them before stock falls, not after, since growth outran food in the run 3 and Lakes famines."
+  source: "CLAUDE.md; knowledge/08 run 3 post-mortem and Meander c1d10"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: births-keep-up
+  text: "Births must keep up with deaths: watch the LEDGER (born vs died per cycle) and act on POPULATION AT RISK before any build except water and food."
+  source: "CLAUDE.md; operator rules: population-progress"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: pods-min-3
+  text: "Keep running Breeding Pods >= max(3, beavers/10 + 1), because a pod makes a kit every 5 days and Iron Teeth live only ~50 days."
+  source: "CLAUDE.md; knowledge/08 Run 3"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: pods-by-day-5
+  text: "Place the first 3 Breeding Pods (10 logs each) by about day 5 once basic food and water run, giving them log priority over everything except food and water and before dams and other log sinks."
+  source: "operator rule: breeding-pods; plan v4 stage 1"
+  kind: plan
+  severity: critical
+  phase: 5
+
+- id: pods-pause-only-if-run-out
+  text: "Pause a pod only when projected water or berries would run out before the hazard ends (not merely because a hazard is approaching), unpause within about a day or as soon as a few days of food exist, and fix shortages with production rather than by cutting pods."
+  source: "operator rule: breeding-pods; knowledge/08 Cycle 6"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: growth-gate
+  text: "Grow the population only through the growth gate: FOOD DAYS trend up over several chunks, production (not just stock) covers the longest hazard at the target population, and beds, pumps, tanks and processing exist for it."
+  source: "operator rule: gate-growth-by-supply; plan v4 section 4"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: beds-for-kits
+  text: "Keep free beds for incoming kits and add housing one pod-cycle before they hit 0 (a Barrack costs 40 logs), confirming the next barrack site's land and reach with walk_distance before it is needed."
+  source: "CLAUDE.md; knowledge/08 Planning ahead and Lakes ep3 c13d8"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: wellbeing
+  text: "Invest in wellbeing, which raises work speed (+20% at 5, +40% at 10), lifespan (+20% at 7, +40% at 17) and movement (+15% at 12): take cheap +1s early (Campfire, Shrubs, food variety, Grindstone) and put area-effect decorations near barracks and busy paths."
+  source: "operator rule: wellbeing; knowledge/08 Storage"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: medical-beds
+  text: "Build Medical Beds as soon as the Injury need goes negative."
+  source: "knowledge/08 S2E1 post-mortem"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: critical-needs
+  text: "No beaver should sit in a critical need state (thirst, hunger, injury); multi-day full-population hunger saturation is a ticking clock, not a stable state."
+  source: "CLAUDE.md; knowledge/08 Lakes ep6 c17d21"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+- id: workday-16h
+  text: "Keep workdays at 16 h (20 h with 43 beavers sent 6 to critical hunger and 3 to critical thirst within a day), lengthening only briefly while wellbeing and sleep are fine and using more workers instead of longer days."
+  source: "knowledge/08 Lakes ep3 c4d1 and ep4 c7d14; AGENTS.md"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: jobs-0-2-unemployed
+  text: "Keep 0-2 unemployed adults against job slots: count kits maturing in the next 6 days before queuing a workplace, never build workplaces nobody can staff, and raise or trim worker counts with set_workers."
+  source: "plan v4 section 5; operator rules: job-management, tune-workers-priority"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: spare-hands-low-priority
+  text: "Absorb spare beavers into extra Builders' Huts and Hauling Posts on the lowest job priority and keep a few free hands for hauling, so a Food Factory is never idle with corn in store for lack of haulers."
+  source: "knowledge/08 User review 2026-10-14 and Lakes ep3 c10d17; operator rules: job-management"
+  kind: plan
+  severity: info
+  phase: 5
+
+# ---- buildings & production
+- id: full-output-stalls
+  text: "A building whose output good is at storage capacity stops producing and its workers idle: add storage beside it, a Hauling Post or haul priority, or pause it and move its workers."
+  source: "operator rule: full-output-stalls; plan v4 section 3"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: empty-input-starves
+  text: "A workshop with an empty input buffer produces nothing: keep its input stocked (a buffer store set to obtain at its door) and check inputs when output is flat."
+  source: "plan v4 section 3; operator rules: storage-near-consumers"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: recipe-set
+  text: "Every building with a recipe or crop choice (Hydroponic Garden, workshops) must have a useful one set on placement."
+  source: "operator rule: assign-storage-and-recipes; plan v4 section 3"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: tune-workers
+  text: "Set worker counts to the actual need rather than the default (for example LargePowerWheel at 2 workers ~150 hp for one 120 hp Gear Workshop) and trim multi-worker buildings whenever 'No available workers' appears."
+  source: "operator rule: tune-workers-priority; knowledge/08 Storage"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: priority-tiers
+  text: "Use job priority tiers: VeryHigh pumps (when water days are under target), farmhouses and food processing; High gatherers and builders while key sites wait; Normal wood and industry; Low hauling posts, spare huts, inventors, full-store workshops and wellbeing; never pause a support building to free workers."
+  source: "plan v4 section 5; operator rules: tune-workers-priority"
+  kind: monitor
+  severity: info
+  phase: 2
+
+- id: paused-register
+  text: "Log every pause with a reason and a resume condition (harness/pause_ids.txt) and re-check the register daily; food and water jobs are never left paused past their condition."
+  source: "plan v4 section 5; operator rules: job-management; knowledge/08 Meander c7d4"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: building-statuses
+  text: "Any game status icon on a building other than Paused (no workers, needs power, full output, nothing to cut, not connected, flooded) is a problem to fix or explain."
+  source: "CLAUDE.md; operator rules: audit-subagents"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: batch-visible
+  text: "Long-cycle makers (Hydroponic Garden with its 288 h Algae batch, Oil Press, Fermenter, Coffee Brewery) show no status mid-batch, so their batch progress and missing inputs must be monitored and reported."
+  source: "knowledge/08 S2E1 c8d4"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: sites-progress
+  text: "A construction site at 0% for a day or more is a path problem: check its door (pathTile) sits on a path linked to the district, not its distance to a Builders' Hut, and if it is unreachable demolish it at 0% and pick a spot by hand."
+  source: "knowledge/08 User review 2026-10-14 and Lakes ep6 c16d4; plan v4 section 5"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: building-caps-support
+  text: "Cap support buildings: 1 Hauling Post per industry or farm cluster (2+ for farm clusters with Hydroponic Gardens), 1 Builders' Hut per build area, Inventors only while science is being spent, extras on Low priority."
+  source: "plan v4 section 5; knowledge/08 Lakes ep6 c17d1-6"
+  kind: monitor
+  severity: info
+  phase: 2
+
+# ---- power
+- id: power-enough
+  text: "Sum the hp of every machine on a network (Lumber Mill 75, Gear Workshop 120, Fermenter 50, Food Factory 120) against its generation before adding a machine and add wheels with it (a Compact Water Wheel gives 120 hp), because a network at ~16% power crawls unnoticed."
+  source: "knowledge/08 S2E1 c6; plan v4 section 3"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: no-beaver-power
+  text: "Power industry with Compact or Large Water Wheels linked by Power Shafts, not beavers: the LargePowerWheel is only a stopgap or drought backup and is retired once water power runs."
+  source: "operator rule: no-beaver-power; AGENTS.md"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: power-link-check
+  text: "Check powerConnections before placing any powered building (a shaft, wheel or powered building must face back at one of its points) and confirm connected: true and no 'needs power' status after it is built, allowing for a partner shaft still under construction."
+  source: "CLAUDE.md; operator rules: power-network-consolidation"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: power-one-network
+  text: "Build one shared power network per industrial area, bridging wheel clusters with Power Shafts or Vertical Power Shafts and linking consumers by shafts rather than through each other, instead of several small isolated networks."
+  source: "operator rule: power-network-consolidation; plan v4 section 3"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: power-drought-proof-backup
+  text: "Give every power network that feeds the food chain a non-flow-dependent generator (Gravity Battery 400 SP, Geothermal Engine 160 SP, Steam Engine, or a beaver-cranked Large Power Wheel as last resort) sized at least Fermenter 50 + Food Factory 120 = 170 hp, before the first drought longer than 3 days."
+  source: "knowledge/08 Lakes ep6 c18d1 and c18d5; plan v4 section 3; operator rules: drought-proof-food"
+  kind: plan
+  severity: critical
+  phase: 4
+
+- id: power-shortage-order
+  text: "When power is short pause the least needed leaf buildings first (wellbeing extras, Gear Workshop if gears are stocked, Metalsmith or Smelter, Lumber Mill if planks are stocked) with Fermenter and Food Factory last, and never pause a building that relays power to others."
+  source: "plan v4 section 3; knowledge/08 Lakes ep3 c10d14"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: power-wheel-siting
+  text: "Place water wheels where flow is fastest (below dams, drops and narrow chokes, not in the still pool above a dam) and read the output with place_building(check=True); wheels link only at the middle of the long side through mutual power points, a Compact Wheel's link point sits 1 above the riverbed, and one footprint neighbour must be walkable."
+  source: "knowledge/08 Meander c3d6, Pressure test run c3d2, Lakes ep3 c7d17 and S2E1 c6"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: power-consumer-at-wheel
+  text: "Site power buildings (Lumber Mill, Smelter, Gear Workshop) touching the wheel or shaft line, not the other way round, and keep a spare corridor beside the main path for shafts; an unpowered mill is 20 logs wasted."
+  source: "knowledge/08 Meander c3d6 and run 3 c4d1"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: steam-engine-feed
+  text: "A Steam Engine burns Log and Water (16-water buffer): staff a Hauling Post near it and put a tank close, or its machines show 'needs power' while it sits at 0 water."
+  source: "knowledge/08 Meander c7d7"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+# ---- storage
+- id: storage-good-set
+  text: "Every new store, tank and pile must have its good set straight after placing (check AllowedGood is not None), because an unassigned store is dead capacity."
+  source: "operator rule: assign-storage-and-recipes, hoard-food-storage"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: storage-with-producer
+  text: "Build storage for every produced good together with or before its producer: logs and planks in Industrial Piles, food in warehouses, water in tanks, and a Plank pile with the mill."
+  source: "CLAUDE.md; operator rules: storage-capacity"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: storage-full-warn
+  text: "A good at 95% of its storage capacity or more needs action now: add storage or pause the producer before it stalls."
+  source: "knowledge/08 Storage; operator rules: storage-capacity"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: storage-right-type
+  text: "Check a store's inventory slots before setting a good: Industrial Piles hold only Log, Plank, TreatedPlank, ScrapMetal, MetalBlock and Dirt, while Gear, MetalPart and food go in warehouses (a pile or Small Warehouse set to the wrong good adds 0 capacity)."
+  source: "knowledge/08 Broadcast run 3 c3d7, S2E1 and S2 c7d21"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: storage-buffer-obtain
+  text: "Put a 1x1 buffer store set to obtain beside each workshop's door and keep bulk stores elsewhere set to supply, building a Hauling Post (20 logs, 10 planks) first because obtain and supply need haulers."
+  source: "operator rule: storage-near-consumers; knowledge/08 Storage"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: no-emptying-food
+  text: "Never leave a food or water store, or a food manufactory such as the Food Factory, marked for emptying: Emptiable.IsMarkedForEmptying makes it inert and starts a famine."
+  source: "knowledge/08 Lakes ep6 c14d9; plan v4 section 6"
+  kind: monitor
+  severity: critical
+  phase: 1
+
+# ---- roads & layout
+- id: door-on-connected-path
+  text: "Every building door (pathTile) must sit on a path linked to the district centre; the game's 'isn't connected to any district center' status is the authority, not walk_distance, which ignores paths."
+  source: "knowledge/08 S2E1 c8d20 and Lakes ep3 c3d12; operator rules: keep-corridors"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: dc-door-path-first
+  text: "Put the Path on the District Centre doorstep first in every opening batch and check that no building says 'not connected' right after placing (a missing DC door path left the colony disconnected and thirsty for a day)."
+  source: "knowledge/08 Lakes ep3 c1d1 and Run 3; plan v4 stage 1"
+  kind: guard
+  severity: critical
+  phase: 5
+
+- id: path-after-placement
+  text: "After every placement check pathTile is on a path and statuses show no 'not connected', run path_check (flood fill from the DC doorstep) for gaps, and make sure the last route tile touches the network orthogonally at the building's own z (diagonals and other levels do not connect, and place_near and place_with_route ignore z)."
+  source: "CLAUDE.md; knowledge/08 Meander c4d10, Lakes ep3 c9d5-c13d5, Pressure test run c1d10"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: path-keep-doors
+  text: "Before replacing, removing or building over a path tile check that no building's pathTile or only road link uses it (stairs on a Medium Tank door cut off 300 water capacity), place every route tile before the stores beside it, and rotate the camera to look in tight spots."
+  source: "knowledge/08 Planning ahead and Cycle 4, S2E1 c8d20; operator rules: keep-corridors"
+  kind: guard
+  severity: critical
+  phase: 5
+
+- id: corridors-before-planting
+  text: "Lay roads before planting fields or forests, leave a corridor about every 8-10 tiles that is never planted, keep a way out of the core in every direction and a second street behind packed home rows."
+  source: "CLAUDE.md; knowledge/08 Map and paths, Run 3 c5d14; plan v4 stage 0"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: bridges-both-ends
+  text: "Every dam across water gets a Path on top (z+1) at once so it becomes a bridge (a dam alone is walkable but not a district link), with both ends linked to nearby roads, Stairs where the bank is a level higher, and verified with walk_distance."
+  source: "knowledge/08 Run 3 c3d10 and Lakes ep3 c7d8-9; operator rules: keep-corridors"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: natural-slopes-first
+  text: "Check survey_map.py links ('Natural Slopes join') before building Stairs and route to the slope's walk-on tile (a slope is entered only along its axis), never build on a slope's foot, and unlock Stairs early on multi-level maps."
+  source: "knowledge/08 Map and paths, Run 3 c1d, Meander c5d6 and S2E1 c8d12; operator rules: keep-corridors"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: district-range
+  text: "District range follows paths (~70 path tiles from the District Centre): check walk_distance from the DC before placing far buildings and run a path right up to every far site, since a dam 8 tiles beyond the last path was 'too far to build'."
+  source: "knowledge/08 Lakes ep3 c7d8 and Pressure test c1d6; plan v4 stage 0"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: doors-by-blueprint
+  text: "Work out the door tile from the blueprint entrance and orientation (h.door_tile or h.place_on_path), check it is a Path at the right z, inspect_tile the door tile and its route (a Deep Water Pump pipe takes the tile in front one level down, and a door on a Small Tank passes the check), then place once."
+  source: "knowledge/08 Broadcast run 3 c3d14, Meander c5d15, Cycle 4; operator rules: no-trial-placements"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: probe-without-placing
+  text: "Search for spots with scan_spots or place_building(check=True), which are invisible and never pan the camera; never place-then-demolish or brute-force real placements, which makes buildings flicker and the camera jump."
+  source: "CLAUDE.md; operator rules: no-trial-placements, camera-follow"
+  kind: guard
+  severity: warn
+  phase: 5
+
+- id: platforms-over-water
+  text: "When the bank is packed, build on Platforms over shallow clean water with a Path on the deck (z+1) instead of hunting for pockets, keeping a pump's intake tile over open water."
+  source: "operator rule: platforms-over-water; knowledge/08 S2E1 c8-c9"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: building-footprint-dry
+  text: "A building floods if any water film covers its base tile, so every footprint tile must have waterDepth 0 (a pump on a 0.17-deep film flooded) while a pump's intake tile is underwater."
+  source: "knowledge/08 S2E1 c9d6"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: flood-key-buildings-high
+  text: "Put key buildings above the badtide and flood level (z5+ on the Meander south bank, or behind levees) and keep a flow gap (a Platform with Path on top) in a full dam line, which raised upstream water and flooded a z4 Gear Workshop."
+  source: "knowledge/08 Meander c4d13 and c6d16"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: template-ids-check
+  text: "Confirm the exact template id (for example Barrack.IronTeeth, not Barrack) against list_blueprints before trusting a None from place_near as 'no land', since an unknown template silently returns nothing."
+  source: "knowledge/08 Lakes ep3 c13d12; operator rules: ready-before-new-game"
+  kind: guard
+  severity: info
+  phase: 6
+
+# ---- land & planting
+- id: plant-use-safe-plant
+  text: "Plant only with h.safe_plant(plant, x0, y0, x1, y1, doorstep_xyz) after reading the view_map MOISTURE grid and heights, never a bare plant_area over a mixed area, trees included (droughts kill trees on dry land)."
+  source: "CLAUDE.md; operator rules: careful-planting; knowledge/08 Lakes ep3 c2d1"
+  kind: guard
+  severity: critical
+  phase: 4
+
+- id: plant-no-water-tiles
+  text: "Never plant on water tiles (MOISTURE w) or on tiles below the bank or planter level that a refilling river floods: plants do not grow in water unless aquatic, so run wetplants.py after planting and clear_planting any water tiles."
+  source: "knowledge/08 Storage and Pressure test c3d6; operator rules: careful-planting"
+  kind: guard
+  severity: critical
+  phase: 4
+
+- id: plant-no-contaminated-soil
+  text: "Never plant on contaminated soil (MOISTURE x, beside badwater) and plant every # tile exactly with no extra safety buffer."
+  source: "knowledge/08 Pressure test c4d1 and c4d14; CLAUDE.md"
+  kind: guard
+  severity: critical
+  phase: 4
+
+- id: plant-no-high-ledge
+  text: "Never plant on a ledge 2 or more higher than its neighbours."
+  source: "CLAUDE.md; AGENTS.md"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: plant-reachable-only
+  text: "Plant only tiles beavers can walk to, re-checking after the river refills because walk_distance counts a dry riverbed as reachable."
+  source: "knowledge/08 Pressure test c3d14; AGENTS.md"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: plant-every-moist-tile
+  text: "Plant every moist reachable tile in range (crops or trees; typically 100-150 plots for the first farmhouse, at least ~90 on day 1), leaving out corridors, pump banks and the dam's future flood zone."
+  source: "operator rule: maximise-planting; plan v4 stage 1; knowledge/08 Broadcast run 3 c1d10 and Pressure test"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: plant-check-marked
+  text: "Read the 'marked' count after plant_area: it only marks empty tiles and silently skips tiles holding another crop, so to switch crops clear_planting the rectangle first and re-run plant_area as tiles are harvested."
+  source: "knowledge/08 Lakes ep3 c9d7 and c12d16"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: forester-area-vs-field
+  text: "Before turning woodland into a field clear_planting the Forester's tree marks there, or the Forester replants saplings over the field."
+  source: "knowledge/08 Cycle 6 c8"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: demolish-resources-care
+  text: "Mark demolish_resources in small batches with a Builders' Hut and Hauling Post first (a big clear-out left every site at 0% for days), read the returned objects and unmark live crops, saplings or natural Slopes it caught, and clear dead trees tile by tile before planting or building."
+  source: "knowledge/08 Pressure test run, Meander c7d1 and Lakes ep3 c3d7"
+  kind: guard
+  severity: warn
+  phase: 4
+
+- id: replant-cleared-land
+  text: "When a lumberjack clears a stand replant it the same day (crops on moist tiles in farmhouse range, oak elsewhere) and scan daily for moist, reachable, empty tiles."
+  source: "AGENTS.md; knowledge/08 S2E1 post-mortem"
+  kind: monitor
+  severity: warn
+  phase: 4
+
+- id: moist-land-shortage
+  text: "If little moist land is in range work down the ladder: move the farmhouse to any moist patch within district range, make moist land with a Dam, bridge with 3+ gatherers, go straight to Levee (120) + Discharge (250) for ponds, then Hydroponic Gardens as the main food."
+  source: "plan v4 stage 0"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: fields-near-held-water
+  text: "Put fields on land fed by a dam reservoir or irrigation pond, not on riverbank that dries out, since river-moistened fields die in droughts longer than ~3 days."
+  source: "knowledge/08 Cycle 6, Run 3 c4d1 and Lakes ep3 c10d21; plan v4 section 2"
+  kind: plan
+  severity: warn
+  phase: 4
+
+# ---- wood
+- id: wood-forester-early
+  text: "Reach tree planting fast: Inventor then Forester (30 science, 10 logs + 7 planks) with the first science, run only 2 lumberjacks until it is up, and 2+ Foresters by cycle 2."
+  source: "CLAUDE.md; knowledge/08 Cycle 4 and Broadcast run 3 c1d15; plan v4 stage 2"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: wood-forester-oak
+  text: "Set every Forester to prioritise Oak (0.27 logs per tile-day vs 0.17 pine and 0.14 birch) for long-term wood, planting Birch (7 days) and Pine beside it for quick early wood."
+  source: "operator rule: oak-trees; knowledge/08 Cycle 4"
+  kind: monitor
+  severity: info
+  phase: 2
+
+- id: wood-replant-not-wait
+  text: "Cover every cutting area with a planting area, because a Forester replants far faster than natural regrowth, and never cut the only stand."
+  source: "CLAUDE.md; operator rules: oak-trees"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: wood-cutting-area-trees
+  text: "Re-run mark_tree_cutting every in-game day and widen the cutting area before treesInArea drops under 15."
+  source: "knowledge/08 Pressure test c2d12 and Meander c2d10"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: wood-grown-trees-check
+  text: "Check grown (not sapling or stump) trees per stand with /api/map/plants every cycle and move the free lumberjack flags before grown hits 0, because idle lumberjacks at their flags mean no grown trees, and open the next stand a cycle before the near one runs out."
+  source: "knowledge/08 Run 3, Meander c3d12 and c5d2, Lakes ep3 c8d18"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: wood-log-floor
+  text: "Keep logs above 50 and plant more trees as soon as Log falls under 50."
+  source: "knowledge/08 Pressure test c8d6; plan v4 stage 2"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: wood-building-caps
+  text: "Run 1 lumberjack per ~40 grown trees in its area and 1 Forester per two lumberjacks, with a second Forester and 4+ lumberjacks by about cycle 3."
+  source: "plan v4 section 5; knowledge/08 Wood"
+  kind: monitor
+  severity: info
+  phase: 2
+
+- id: wood-whole-stand-day1
+  text: "On day 1 mark the whole grown stand for cutting (checking grown trees in /api/map/plants) with a log pile beside the lumberjacks, so they never idle."
+  source: "knowledge/08 Broadcast run 3 c1d6; plan v4 stage 1"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: paused-wood-resume
+  text: "Resume paused lumberjacks in the same chunk their trees mature: flags paused to protect young stands were never resumed and logs stayed short for the rest of a run."
+  source: "knowledge/08 S2E1 post-mortem"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: wood-pre-drought-stock
+  text: "Stock about 60 logs and planks before each drought, since wheel-powered mills stop and river-moist trees can die; check MOISTURE before marking a forest."
+  source: "knowledge/08 Wood, Lakes ep3 c2d1 and c2d16"
+  kind: monitor
+  severity: info
+  phase: 2
+
+# ---- hazards
+- id: hazard-checklist-3-days
+  text: "Three days before every drought or badtide warning check food days, water days, storage room for the reserve, crops beside held water, pods vs food and power for the food buildings."
+  source: "knowledge/08 run 3 post-mortem; plan v4 section 4"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: hazard-drought-priorities
+  text: "In a drought set farms and gatherers to High work priority and support jobs to Low, harvest early into warehouses, and check field moisture (moist:false is an alarm) and the /api/map/plants dying counts every drought day."
+  source: "knowledge/08 Storage, Meander c8d1 and Lakes ep3 c10d21; operator rules: drought-pumps"
+  kind: monitor
+  severity: warn
+  phase: 4
+
+- id: hazard-badtide-inlets
+  text: "Before a badtide close every Floodgate or Dam on inlets upstream of the fields so clean water stays beside them (badwater gives soil no moisture and kills crops within 2 days), and stock food for the badtide plus ~3 days of regrowth."
+  source: "knowledge/08 Cycle 6 Badtide 2 and Run 3 c5d18; plan v4 section 4"
+  kind: plan
+  severity: critical
+  phase: 4
+
+- id: post-hazard-actions
+  text: "After every hazard check farmhouses replant at once, paused food jobs are back on and pumps restart once the river near the fields has refilled, and record the hazard's water and food usage in knowledge/goals.md."
+  source: "CLAUDE.md; plan v4 section 4; knowledge/08 Meander c2d8"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: post-hazard-patience
+  text: "Right after a hazard fields read dry and stocks can read 0 for a while: check Manufactory.ProductionProgress and field moisture before panicking, and only dig for a bug if progress is flat for several chunks with HasAllIngredients true."
+  source: "knowledge/08 Lakes ep6 c15d2-6 and Lakes ep3 c7d1"
+  kind: conduct
+  severity: info
+  phase: 0
+
+- id: hazard-unstable-core
+  text: "On every map work out each Unstable Core's blast date (countdown starts cycle N day 1, blast 10.5 days later) and effects, build nothing important inside its blast sphere (radius + 1 around the footprint centre at the core's z), and plan a counter-measure (levee or dam outside the sphere) before its cycle."
+  source: "CLAUDE.md; knowledge/08 Pressure test run; plan v4 stage 0"
+  kind: plan
+  severity: warn
+  phase: 4
+
+# ---- progress / science / opening
+- id: science-running
+  text: "Keep science running and spent on the plan's next unlock (a pile over 500 unspent is flagged): a run once sat on 1100+ science while food tech was missing."
+  source: "CLAUDE.md; knowledge/08 run 3 post-mortem; plan v4 section 5"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: science-hazard-first
+  text: "Spend science on hazard-proofing first (Stairs, Levee, Discharge, Gear Workshop, Hydroponic Garden, Food Factory, drought-proof power) ahead of other unlocks."
+  source: "knowledge/08 run 3 post-mortem; plan v4 stage 4"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: progress-every-building
+  text: "Aim for at least one of every building via progress.py, cheapest unlocks first and the shortest unlock path, with the next build always queued and builders busy; before spending science check a valid spot and the prerequisites exist (a 5-wide Large Water Wheel spot, a Centrifuge for the Decontamination Pod, Platforms to reach a Rooftop Terrace)."
+  source: "CLAUDE.md; knowledge/08 S2E1 c6 and Meander c7d13; plan v4 stage 6"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: plan-ahead-demand
+  text: "Grow production before demand: logs, then planks, then gears (Gear Workshop at 100 science unlocks Medium Tank, Weather Station and automation), asking at each checkpoint what the next 2-3 days need."
+  source: "operator rule: learn-and-plan-ahead; knowledge/08 Planning ahead"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: opening-batch-one-run
+  text: "While paused before the go-ahead work out the whole opening batch (spots, orientations, roads, plant rectangles) in one plan_opening.py run with the start facts cached (templates end in .IronTeeth; start is 0 logs, 0 water, 130 berries), then --apply on go instead of probing spots one call at a time."
+  source: "CLAUDE.md; operator rules: go-ahead-gate, ready-before-new-game"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: opening-pumps-tanks
+  text: "Open with water: 2-3 Deep Water Pumps on the deepest clean water (about 1 per 5 beavers) plus 2-3 Small Tanks set to Water, because the start has 0 water."
+  source: "plan v4 stage 1; knowledge/08 Run 3 day 1-5"
+  kind: plan
+  severity: critical
+  phase: 5
+
+- id: opening-farmhouse-first
+  text: "Place the FarmHouse right after the first pump and plant kohlrabi on day 1-2 (130 start berries last ~3 days), with barrack and pods after, and with the farmhouse before the lumberjacks' second building."
+  source: "knowledge/08 Lakes ep3 c1d8 and Pressure test c1d5"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: opening-extra-jobs-last
+  text: "Put extra opening jobs (Inventor, a second pump, a third lumberjack) last in the build order and paused until kits grow up, so the 9 founders stay on water, food and logs."
+  source: "knowledge/08 Pressure test run"
+  kind: plan
+  severity: info
+  phase: 5
+
+- id: opening-scout
+  text: "Scout before placing anything: survey_map.py scan then overview, water, links, farmland and resources (measure every moist reachable tile within ~20 tiles of the farmhouse spot, read the flow direction, mark the last choke downstream of pumps and fields, and note natural Slopes, Dams, Blockages and Relics)."
+  source: "CLAUDE.md; plan v4 stage 0; knowledge/08 Map and paths"
+  kind: plan
+  severity: warn
+  phase: 5
+
+- id: irrigation-barrier-chain
+  text: "On maps with a badwater river beside farmland unlock the Irrigation Barrier chain (Tapper's Shack, Wood Workshop 800, Barrier 400, TreatedPlank) by about cycle 5 and build it on the first land tiles along the bank."
+  source: "AGENTS.md; knowledge/08 S2E1 post-mortem"
+  kind: plan
+  severity: warn
+  phase: 5
+
+# ---- water engineering
+- id: dam-early
+  text: "Build the first 20-log Dam at the downstream choke in cycle 1 (day 2-5, once pump, farmhouse and pods are placed) and complete the dam line before the first drought, unlocking Stairs first if the bed is below the bank so builders can reach it."
+  source: "operator rule: water-systems; plan v4 stage 1 and 3"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: dam-siting
+  text: "Site a dam at the last choke downstream of the pumps and fields, the last same-height point before the creek drops off its terrace, reading the flow arrows first (a dam upstream of every pump held nothing for them)."
+  source: "operator rule: dam-siting; knowledge/08 run 3 and Lakes ep3 c6d2"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: dam-bank-and-reach
+  text: "Check the dam's banks stand above it and give builders a path to an adjacent dry tile, building river crossings while the bed is dry in a drought."
+  source: "operator rule: dam-siting; knowledge/08 Cycle 4"
+  kind: plan
+  severity: info
+  phase: 4
+
+- id: reservoir-upstream
+  text: "Plan a big upstream reservoir higher than the base (stacked Levee walls in gorges, filled in temperate weather, inlet closed before droughts) released slowly through Fill or Throttling Valves for gravity-fed drinking and irrigation water, going deep not wide because evaporation is ~0.045 m/day per exposed tile."
+  source: "operator rule: water-systems; plan v4 section 2"
+  kind: plan
+  severity: info
+  phase: 4
+
+- id: irrigation-pond
+  text: "Use a 1-tile irrigation pond (4 Levees around a 1-tile hole fed by a Discharge) for any field that cannot sit by held water, budget its water (a Discharge moves up to 3/hour; gate it with Depth Sensors), and check with underground.py that a crater or bowl has a real feed before relying on it."
+  source: "knowledge/08 Meander user tip and S2E1 post-mortem; plan v4 section 2"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: water-goals-each-cycle
+  text: "Every cycle review the water goals: dams holding river water through droughts, diverting badwater away from fresh water during badtides (Floodgates on every inlet), and capping or diverting badwater sources to reclaim land."
+  source: "CLAUDE.md; operator rules: project-water-goals"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: underground-assess
+  text: "On every new map run underground.py --refresh before the opening plan: trace every source to the water it feeds, find caves and pressurised water, and list what each natural dam or blockage holds."
+  source: "CLAUDE.md; operator rules: verify-mechanics; knowledge/08 Pressure test run"
+  kind: plan
+  severity: warn
+  phase: 4
+
+- id: floodgate-build-order
+  text: "Build Floodgates and dams across a river one by one from a single bank and place the Floodgate last, because floodgates are not walkable and strand an unfinished neighbour (dams are walkable)."
+  source: "knowledge/08 Lakes ep3 c4d15"
+  kind: guard
+  severity: info
+  phase: 5
+
+# ---- stream & narration
+- id: narrate-every-2-min
+  text: "Post an overlay thought at least every 2 real minutes (watch in ~110 s chunks, keep thought_watchdog.py 100 armed and re-armed every 30 min) and narrate before any long scan, running slow placement searches in the background so watch.py keeps going."
+  source: "CLAUDE.md; operator rules: narrate-every-2-min; knowledge/08 Lakes ep3 c10d4 and S2 c7d13"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: narrate-matches-state
+  text: "Write each overlay thought to match the current watch report exactly, in plain friendly first-person language with the actual number or trend just observed, not a prediction of the next chunk or a leftover from an earlier one."
+  source: "operator rule: narration-timing-clarity, narrate-overlay"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: narrate-no-attribution
+  text: "Never attribute an idea or decision to the operator, chat or any outside source on the overlay or ticker (no 'good idea', 'someone suggested', 'as requested'); narrate every decision as my own."
+  source: "operator rule: no-attribution-overlay; knowledge/08 S2E1 post-mortem"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: plan-max-8
+  text: "Keep the on-stream plan to 8 items or fewer."
+  source: "CLAUDE.md; operator rules: narrate-overlay"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: plan-fresh
+  text: "Keep the on-stream plan matching the live colony: on every PLAN CHECK ping (about every 7 min) run narration-coach and fix the plan with set_plan straight away."
+  source: "CLAUDE.md; knowledge/08 S2 c8d3"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: monitor-subagents
+  text: "Run the read-only monitor sub-agents in the background: production-monitor and narration-coach every 2-3 chunks, colony-auditor and layout-planner daily or after a big unlock, acting on their digests (they never place, demolish, narrate or run watch.py)."
+  source: "CLAUDE.md; operator rules: audit-subagents; plan v4 section 6"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: never-filter-audit
+  text: "Never filter AUDIT lines or the TIME/WEATHER line out of watch.py output, and never silence an alert in the ignore list for long, because hidden audits and a missed drought start went unseen."
+  source: "CLAUDE.md; knowledge/08 Pressure test run, Meander c7d17, Lakes ep3 c9d19 and run 3 post-mortem"
+  kind: conduct
+  severity: critical
+  phase: 0
+
+- id: ticker-first-person
+  text: "Write ticker announcements in the first person as myself (never 'Claude' or 'the AI'), about one per in-game day for news viewers should notice."
+  source: "CLAUDE.md; operator rules: ticker-first-person"
+  kind: conduct
+  severity: info
+  phase: 0
+
+- id: poll-counter-running
+  text: "The chat poll counter (poll_service.py) must be running and its status 'counting' before trusting poll results; read the POLL line every chunk and never treat 0 votes as real unless it is counting."
+  source: "CLAUDE.md; knowledge/08 S2E1 c3d12"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: poll-close-and-act
+  text: "Close each viewer poll with close_poll, narrate the result and act on it, so no poll is left open without follow-through."
+  source: "CLAUDE.md; operator rules: viewer-polls"
+  kind: monitor
+  severity: info
+  phase: 1
+
+- id: poll-options-in-plan
+  text: "Every poll option must already be in my plan and safe to do (chat only picks the order), with a new 5-minute poll about every 10 real minutes while streaming."
+  source: "CLAUDE.md; operator rules: viewer-polls"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: camera-follow
+  text: "Keep camera follow mode on so every action is shown and never leave the view idle (a still camera is fine while beavers work or a build is in view), with no constant rotating or rapid back-and-forth jumps, which cause motion sickness."
+  source: "CLAUDE.md; operator rules: camera-follow"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: speed-3-while-waiting
+  text: "After the go-ahead keep the game at speed 3 whenever things are stable and I am thinking or waiting on sub-agents, slowing down only for a hazard being actively handled and using speed 1 only when stepping away."
+  source: "CLAUDE.md; operator rules: speed-3-while-waiting"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: dont-pause
+  text: "Do not pause the game after the go-ahead unless it is a real emergency; drop to speed 1 instead for tricky moments."
+  source: "CLAUDE.md; operator rules: dont-pause"
+  kind: monitor
+  severity: warn
+  phase: 2
+
+- id: go-ahead-gate
+  text: "At the start of a new chat keep the game at speed 0 and both overlay panels empty until the operator gives the go-ahead: only read-only checks and planning are allowed (no narrate, set_plan, add_todo, check_todo, unpausing or placing)."
+  source: "CLAUDE.md; operator rules: go-ahead-gate"
+  kind: conduct
+  severity: critical
+  phase: 0
+
+- id: checkpoint-daily
+  text: "Checkpoint once per in-game day and before any break with checkpoint.py, and on a new game delete harness/cache/pop-ledger.json."
+  source: "CLAUDE.md; operator rules: token-lean-stream"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: user-requests-ledger
+  text: "Add every operator request to harness/pending.txt the moment it arrives, delete a line only when it is done, and prune stale lines daily so real tasks are not buried."
+  source: "CLAUDE.md; knowledge/08 Pressure test c4d6 and S2E1 post-mortem"
+  kind: monitor
+  severity: warn
+  phase: 1
+
+- id: end-stream-close-obs
+  text: "To end a stream pause, show the Thanks slate, save and exit the game, end the stream and then quit OBS (quit refuses while live)."
+  source: "CLAUDE.md; operator rules: close-obs"
+  kind: conduct
+  severity: info
+  phase: 0
+
+# ---- conduct
+- id: chat-never-reaches-ai
+  text: "Viewer chat text must never reach the AI, its context, screenshots or narration: polls return vote counts only and new-chatter welcomes are a count, never names."
+  source: "CLAUDE.md; AGENTS.md; operator rules: timberlive-project, viewer-polls"
+  kind: conduct
+  severity: critical
+  phase: 0
+
+- id: no-secrets-printed
+  text: "Never print, log or echo the bridge token or any YouTube key, and never read the YouTube key file, because the session may be on stream."
+  source: "CLAUDE.md; AGENTS.md; operator rules: timberlive-project, obs-control"
+  kind: conduct
+  severity: critical
+  phase: 0
+
+- id: player-tools-only
+  text: "Use only actions a player has on the toolbar or building panels (demolish_resources for plants, demolish for buildings and paths): no dev-mode instant delete, free goods or instant build, and any new bridge action must copy a toolbar tool."
+  source: "CLAUDE.md; AGENTS.md; operator rules: player-tools-only"
+  kind: guard
+  severity: critical
+  phase: 6
+
+- id: verify-mechanics
+  text: "Never guess how Timberborn works or whether a water body is fed: check the decompiled game code (_decompiled/src), the wiki or underground.py first and say which source was used."
+  source: "CLAUDE.md; operator rules: verify-mechanics; knowledge/08 Pressure test run"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: keep-playing
+  text: "Once told to play, keep chaining watch chunks and acting and never end the turn to wait for the operator unless told to stop; if a tool or permission is blocked say so in one line and play on around it."
+  source: "CLAUDE.md; operator rules: keep-playing"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: lessons-live
+  text: "After every death not from old age, hazard, shortage or correction add one line to the lessons file straight away and apply it."
+  source: "CLAUDE.md; operator rules: learn-and-plan-ahead, population-progress"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: replicable-any-ai
+  text: "Keep every rule, lesson and helper replicable by any AI: put rules in the repo playbook and knowledge files (not only private memory), helpers in the harness folder with portable paths, and use only bridge, MCP or Python tools."
+  source: "operator rules: project-local-ai-replicable"
+  kind: conduct
+  severity: info
+  phase: 6
+
+- id: sub-agent-model
+  text: "Set the model explicitly on every sub-agent call by job: haiku for searches and lookups, sonnet for routine edits and scripts, opus for hard code and design."
+  source: "operator rule: subagent-model"
+  kind: conduct
+  severity: info
+  phase: 0
+
+- id: test-queries-before-stream
+  text: "Test every new query or tool on a quiet save before using it live, and keep view_map areas to 40x40 or smaller, because one oversized view_map crashed the game on stream."
+  source: "knowledge/08 run 3 post-mortem; CLAUDE.md"
+  kind: conduct
+  severity: warn
+  phase: 0
+
+- id: token-lean
+  text: "Stay token-lean: at most about one screenshot per in-game day, no full list_buildings or list_blueprints dumps (use filters), related placements batched in one python call, and a checkpoint each day so nothing is lost at compaction."
+  source: "CLAUDE.md; operator rules: token-lean-stream"
+  kind: conduct
+  severity: info
+  phase: 0
+
+- id: session-start-checks
+  text: "On session start read the latest checkpoint, ping the game (restart it if closed), check the overlay is up and read the map survey (survey_map.py goals) before acting."
+  source: "CLAUDE.md; AGENTS.md"
+  kind: conduct
+  severity: info
+  phase: 0
+
+

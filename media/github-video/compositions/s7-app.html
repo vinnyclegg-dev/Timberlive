@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s7-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ece8e1;
+          font-family: Montserrat, sans-serif;
+        }
+        #s7-root .scene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0e1216;
+        }
+        #s7-root .glow {
+          position: absolute;
+          left: 260px;
+          top: 340px;
+          width: 1400px;
+          height: 640px;
+          background: radial-gradient(ellipse at center, rgba(224, 145, 63, 0.12) 0%, rgba(224, 145, 63, 0) 70%);
+        }
+        #s7-root .layout {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 64px;
+        }
+        #s7-root .title {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+        }
+        #s7-root .kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          color: #e0913f;
+        }
+        #s7-root .head {
+          display: block;
+          font-size: 84px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          line-height: 1.04;
+        }
+        #s7-root .row {
+          display: flex;
+          gap: 40px;
+        }
+        #s7-root .card {
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+          width: 560px;
+        }
+        #s7-root .card img {
+          display: block;
+          width: 560px;
+          height: 362px;
+          border-radius: 14px;
+          border: 1px solid rgba(236, 232, 225, 0.16);
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+        }
+        #s7-root .step {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          font-size: 32px;
+          font-weight: 700;
+        }
+        #s7-root .num {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 46px;
+          height: 46px;
+          border-radius: 23px;
+          background: #e0913f;
+          color: #0e1216;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+        }
+      </style>
+      <div id="s7-root" data-composition-id="s7-app" data-width="1920" data-height="1080">
+        <div class="scene" id="s7-scene">
+          <div class="glow"></div>
+          <div class="layout">
+            <div class="title">
+              <div id="s7-kicker" class="kicker">THE TIMBERLIVE APP</div>
+              <div id="s7-head" class="head">One Windows app sets it all up</div>
+            </div>
+            <div class="row">
+              <div class="card s7-card"><img src="../assets/app-home.png" alt="" /><div class="step"><span class="num">1</span>Install the mod</div></div>
+              <div class="card s7-card"><img src="../assets/app-connect.png" alt="" /><div class="step"><span class="num">2</span>Connect your AI</div></div>
+              <div class="card s7-card"><img src="../assets/app-stream.png" alt="" /><div class="step"><span class="num">3</span>Stream it, if you like</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s7-scene", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 0);
+          tl.fromTo("#s7-kicker", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.3);
+          tl.fromTo("#s7-head", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.4);
+          tl.fromTo(".s7-card", { opacity: 0, y: 70, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.25 }, 0.8);
+          window.__timelines["s7-app"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

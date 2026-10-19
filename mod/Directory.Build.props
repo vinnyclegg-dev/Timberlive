@@ -1,0 +1,7 @@
+<Project>
+  <!-- Keep the builder's folder out of the DLLs: map it to a neutral root in debug info and the PDB path. -->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..'))=/_/</PathMap>
+  </PropertyGroup>
+</Project>
